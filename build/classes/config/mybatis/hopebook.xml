@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hopebook">	
+
+	<insert id="add" parameterType="net.hb.book.HbookDTO">
+	   insert into hopebook
+	   values(hopebook_seq.nextval, #{hname}, #{hwname}, #{hpublisher}, #{hprice}, #{hid})    
+	</insert>
+	
+	<select id="selectAll" resultType="net.hb.book.HbookDTO">
+   	   select  rownum rn, g.*  from  hopebook g  
+   	</select>
+   	
+
+	
+</mapper>
+
+
+
+
+
+
+
+

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="book">	
+   	
+   	<!-- 페이징&검색 구현 -->
+   	<select id="selectAll" parameterType="net.hb.book.BookDTO" resultType="net.hb.book.BookDTO"> <!-- 나가는 인자값 -->
+   	   select * from (
+   	   select rownum rn, b.* from book b where ${skey} like '%' || #{sval} || '%'
+   	   ) where rn between #{start} and #{end}
+   	</select>
+
+	<!-- 검색개수 -->
+	<select id="countAllSearch" parameterType="net.hb.book.BookDTO" resultType="int">
+	  select count(*) as cnt from book where ${skey} like '%' || #{sval} || '%' 
+	</select>
+	
+	<!-- 전체개수 -->
+	<select id="countAll" resultType="int">
+	  select count(*) as cnt from book 
+	</select>
+	
+	<!-- 해당도서의 예약건수 -->
+	<select id="reserveCountALL" parameterType="net.hb.book.BookDTO" resultType="int">
+	  select count(*) as cnt from reserve where bcode = #{bcode}
+	</select>
+	
+	<!-- 상세페이지 -->
+	<select id="detail" parameterType="int"  resultType="net.hb.book.BookDTO">
+	   select * from book where bcode = #{data}
+	</select>
+	
+	<!-- 회원가입 -->
+	<select id="idduplicate" parameterType="net.hb.book.BookDTO" resultType="String">
+   	  select * from libmember where id=#{id}
+   	</select>
+   	
+   	<insert id="insert" parameterType="net.hb.book.BookDTO"> 
+	  insert into libmember (name, id, pass, birth, phone, email, address, address_detail, zipcode, book_count, sign_date)
+	  values( #{name}, #{id}, #{pass}, #{birth}, #{phone}, #{email}, #{address}, #{address_detail}, #{zipcode}, 0, sysdate )
+	</insert>
+
+	<!-- 조회수 -->
+	<update id="updateHit" parameterType="int">
+		update book set hit = hit + 1 where bcode = #{bcode}
+	</update>
+	
+    <!-- 인기도서 -->
+    <select id="selectAlltop" resultType="net.hb.book.BookDTO">
+        select rownum rn , b.* 
+         from (select * from book order by hit desc) b
+         where rownum &lt; 11 <!-- &lt는 부등호 < -->
+    </select>
+   
+    <!-- 신간도서 -->
+    <select id="selectAllnew" resultType="net.hb.book.BookDTO">
+        select rownum rn , b.* 
+         from (select * from book order by publisheddate desc) b
+         where rownum &lt; 11 <!-- &lt는 부등호 < -->
+    </select>
+    
+    <insert id="admin_insert" parameterType="net.hb.book.BookDTO"> 
+	  insert into book (bcode, bname, wname, genre, issue)
+	  values( #{bcode}, #{bname}, #{wname}, #{genre}, 0 )
+	</insert>
+
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+		
+	<typeAliases>
+	   <typeAlias alias="bdto"  type="net.hb.book.BookDTO"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="config/mybatis/book.xml"/>
+		<mapper resource="config/mybatis/book_reply.xml"/>
+		<mapper resource="config/mybatis/rent.xml"/>
+		<mapper resource="config/mybatis/hopebook.xml"/>
+		<mapper resource="config/mybatis/login.xml"/>
+		<mapper resource="config/mybatis/board.xml"/>
+		<mapper resource="config/mybatis/board_reply.xml"/>
+	</mappers>
+</configuration>

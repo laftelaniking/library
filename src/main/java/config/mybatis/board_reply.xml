@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board_reply">	
+
+	<!-- 댓글 -->
+	<select id="selectAll" parameterType="int" resultType="net.hb.book.BoardreplyDTO">
+		select * from(
+		select rownum rn, br.dnum, br.bnum, br.dcontent, br.bid 
+		from libmember lib inner join boardreply br on lib.id = br.bid and br.bnum  = #{bnum} )
+	</select>
+	
+	<insert id="add" parameterType="net.hb.book.BoardreplyDTO">
+		insert into boardreply values( boardreply_seq.nextval, #{bnum}, #{dcontent}, #{bid})
+	</insert>
+
+	<delete id="delete" parameterType="int">
+		delete from boardreply where dnum = #{dnum}
+	</delete>
+	
+	<update id="update" parameterType="net.hb.book.BoardreplyDTO">
+		update boardreply set dcontent=#{dcontent} where dnum = #{dnum}
+	</update>
+</mapper>
+
+
+
+
+
+
+
